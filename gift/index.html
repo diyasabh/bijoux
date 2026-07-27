@@ -36,13 +36,13 @@
 </style>
 </head>
 <body>
-  <div class="from" id="from">someone sent you a charm</div>
+  <div class="from" id="from">someone sent you a bijou</div>
   <img class="charm" id="art" src="../assets/charm-heart.png" alt="a hand-painted charm">
   <h1 id="name">A charm</h1>
   <div class="note" id="note"></div>
   <div class="code fallback" id="codeRow">gift code <b id="code"></b></div>
   <a class="cta" id="cta" href="#">Get Bijoux to claim it</a>
-  <div class="sub">Bijoux is a keepsake app — little hand-painted charms, given
+  <div class="sub">Bijoux is a keepsake app — little hand-painted bijoux, given
     between people, worn on a bracelet. This one is already waiting for you.</div>
   <div class="brand">sent with <b>Bijoux</b></div>
 <script>
@@ -56,7 +56,7 @@
     if (d) {
       const b64 = d.replace(/-/g,"+").replace(/_/g,"/");
       const info = JSON.parse(decodeURIComponent(escape(atob(b64))));
-      if (info.s) document.getElementById("from").textContent = info.s + " sent you a charm";
+      if (info.s) document.getElementById("from").textContent = info.s + " sent you a bijou";
       if (info.n) document.getElementById("name").textContent = "“" + info.n + "”";
       if (info.m) document.getElementById("note").textContent = "“" + info.m + "”";
       if (TYPES.includes(info.t)) document.getElementById("art").src = "../assets/charm-" + info.t + ".png";
