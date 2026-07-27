@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>a charm for you · Bijoux</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#F3EFE7;--dim:#8E8B85;--red:#E0261C;--camel:#C69B6B;}
+  *{box-sizing:border-box;margin:0;}
+  html{font-family:'Quicksand',sans-serif;letter-spacing:-0.03em;}
+  body{background:#060606;color:var(--cream);min-height:100vh;display:flex;
+       flex-direction:column;align-items:center;justify-content:center;
+       padding:40px 24px;text-align:center;gap:0;}
+  .from{color:var(--dim);font-weight:600;font-size:16px;}
+  .charm{width:190px;height:174px;margin:26px 0 10px;object-fit:contain;
+         transform-origin:top center;animation:sway 3.8s cubic-bezier(.45,0,.55,1) infinite alternate;}
+  @keyframes sway{from{transform:rotate(-2.6deg)}to{transform:rotate(2.6deg)}}
+  @media (prefers-reduced-motion: reduce){.charm{animation:none}}
+  h1{font-size:34px;font-weight:700;letter-spacing:-0.045em;margin-top:2px;}
+  .note{font-style:italic;color:var(--cream);opacity:.92;font-size:18px;
+        font-weight:500;margin-top:12px;max-width:340px;line-height:1.45;}
+  .code{margin-top:30px;color:var(--dim);font-size:14px;font-weight:500;}
+  .code b{color:var(--cream);font-family:ui-monospace,monospace;font-size:19px;
+          letter-spacing:2px;background:rgba(255,255,255,.06);padding:6px 14px;
+          border-radius:10px;margin-left:6px;}
+  .cta{margin-top:26px;display:inline-block;background:linear-gradient(90deg,#E0261C,#C21F16);
+       color:var(--cream);font-weight:700;font-size:17px;text-decoration:none;
+       padding:15px 34px;border-radius:18px;letter-spacing:-0.03em;}
+  .sub{margin-top:12px;color:var(--dim);font-size:13px;max-width:320px;line-height:1.5;}
+  .brand{margin-top:44px;color:var(--dim);font-size:13px;font-weight:600;}
+  .brand b{color:var(--red);}
+  .fallback{display:none;}
+</style>
+</head>
+<body>
+  <div class="from" id="from">someone sent you a charm</div>
+  <img class="charm" id="art" src="../assets/charm-heart.png" alt="a hand-painted charm">
+  <h1 id="name">A charm</h1>
+  <div class="note" id="note"></div>
+  <div class="code fallback" id="codeRow">gift code <b id="code"></b></div>
+  <a class="cta" id="cta" href="#">Get Bijoux to claim it</a>
+  <div class="sub">Bijoux is a keepsake app — little hand-painted charms, given
+    between people, worn on a bracelet. This one is already waiting for you.</div>
+  <div class="brand">sent with <b>Bijoux</b></div>
+<script>
+  const TF_LINK = "";   // TestFlight public link — filled in when available
+  const TYPES = ["heart","star","flower","glasses","coffee","croissant","cat",
+                 "note","moon","cake","wine","book","bow"];
+  try {
+    const frag = new URLSearchParams(location.hash.slice(1));
+    const code = frag.get("c") || "";
+    const d = frag.get("d") || "";
+    if (d) {
+      const b64 = d.replace(/-/g,"+").replace(/_/g,"/");
+      const info = JSON.parse(decodeURIComponent(escape(atob(b64))));
+      if (info.s) document.getElementById("from").textContent = info.s + " sent you a charm";
+      if (info.n) document.getElementById("name").textContent = "“" + info.n + "”";
+      if (info.m) document.getElementById("note").textContent = "“" + info.m + "”";
+      if (TYPES.includes(info.t)) document.getElementById("art").src = "../assets/charm-" + info.t + ".png";
+    }
+    if (code) {
+      document.getElementById("code").textContent = code;
+      document.getElementById("codeRow").style.display = "block";
+    }
+    const cta = document.getElementById("cta");
+    if (TF_LINK) { cta.href = TF_LINK; }
+    else { cta.href = "https://apps.apple.com/app/testflight/id899247664";
+           cta.textContent = "Get TestFlight, then search Bijoux"; }
+  } catch (e) { /* fragment malformed — the default preview still stands */ }
+</script>
+</body>
+</html>
