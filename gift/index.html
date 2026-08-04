@@ -22,10 +22,15 @@
   h1{font-size:34px;font-weight:700;letter-spacing:-0.045em;margin-top:2px;}
   .note{font-style:italic;color:var(--cream);opacity:.92;font-size:18px;
         font-weight:500;margin-top:12px;max-width:340px;line-height:1.45;}
-  .code{margin-top:30px;color:var(--dim);font-size:14px;font-weight:500;}
-  .code b{color:var(--cream);font-family:ui-monospace,monospace;font-size:19px;
-          letter-spacing:2px;background:rgba(255,255,255,.06);padding:6px 14px;
-          border-radius:10px;margin-left:6px;}
+  .code{margin-top:30px;color:var(--dim);font-size:13px;font-weight:600;
+        display:flex;flex-direction:column;align-items:center;gap:9px;}
+  .code b{color:var(--red);font-family:ui-monospace,monospace;font-size:30px;
+          letter-spacing:5px;background:rgba(243,239,231,.97);padding:12px 26px;
+          border-radius:14px;border:2px dashed var(--camel);cursor:pointer;}
+  .copied{color:var(--camel);font-size:12px;font-weight:700;opacity:0;transition:opacity .3s;}
+  .have{margin-top:22px;color:var(--cream);opacity:.85;font-size:14px;
+        font-weight:600;max-width:330px;line-height:1.5;}
+  .have b{color:var(--camel);}
   .cta{margin-top:26px;display:inline-block;background:linear-gradient(90deg,#E0261C,#C21F16);
        color:var(--cream);font-weight:700;font-size:17px;text-decoration:none;
        padding:15px 34px;border-radius:18px;letter-spacing:-0.03em;}
@@ -40,7 +45,10 @@
   <img class="charm" id="art" src="../assets/charm-heart.png" alt="a hand-painted charm">
   <h1 id="name">A charm</h1>
   <div class="note" id="note"></div>
-  <div class="code fallback" id="codeRow">gift code <b id="code"></b></div>
+  <div class="code fallback" id="codeRow">your claim code — tap to copy
+    <b id="code"></b><span class="copied" id="copied">copied ✓</span></div>
+  <div class="have fallback" id="haveRow">already have Bijoux?
+    open it → tap <b>receive</b> → enter the code above</div>
   <a class="cta" id="cta" href="#">Get Bijoux to claim it</a>
   <div class="sub">Bijoux is a keepsake app — little hand-painted bijoux, given
     between people, worn on a bracelet. This one is already waiting for you.</div>
@@ -63,7 +71,13 @@
     }
     if (code) {
       document.getElementById("code").textContent = code;
-      document.getElementById("codeRow").style.display = "block";
+      document.getElementById("codeRow").style.display = "flex";
+      document.getElementById("haveRow").style.display = "block";
+      document.getElementById("code").addEventListener("click", () => {
+        navigator.clipboard && navigator.clipboard.writeText(code);
+        const c = document.getElementById("copied");
+        c.style.opacity = 1; setTimeout(() => c.style.opacity = 0, 1600);
+      });
     }
     const cta = document.getElementById("cta");
     if (TF_LINK) { cta.href = TF_LINK; }
